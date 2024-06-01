@@ -26,15 +26,12 @@ class ChatbotApp:
             self.openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
             st.markdown("[Get an OpenAI API key](https://platform.openai.com/account/api-keys)")
 
-            selected_model = st.selectbox(
+            st.session_state["model"] = st.selectbox(
                 "Select Model",
                 options=["gpt-3.5-turbo", "gpt-4o"],
-                index=0,
-                key="selected_model"
+                index=0,                
             )
 
-        if st.session_state["model"] != selected_model:
-            st.session_state["model"] = selected_model
 
     def display_chat(self):
         st.title("Chatbot")
@@ -75,4 +72,4 @@ class ChatbotApp:
         st.write(f"Using {st.session_state['model']}, cost for this query: ${total_cost:.6f}")
 
 if __name__ == "__main__":
-    ChatbotApp()
+    self = ChatbotApp()
