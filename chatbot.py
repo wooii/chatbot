@@ -30,7 +30,7 @@ if "model" not in st.session_state:
 
 # Display title and previous messages
 st.title("Chatbot")
-st.caption(f"A chatbot powered by OpenAI ({st.session_state.model})")
+st.caption(f"A chatbot powered by OpenAI.")
 
 for msg in st.session_state.messages:
     st.chat_message(msg["role"]).write(msg["content"])
