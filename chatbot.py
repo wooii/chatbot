@@ -1,7 +1,9 @@
 """
 Created on Sat Jun  1 10:43:58 2024
 @author: Chenfeng Chen
-"""from openai import OpenAI
+"""
+
+from openai import OpenAI
 import streamlit as st
 
 # Prices per 1M tokens
