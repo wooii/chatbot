@@ -20,8 +20,6 @@ with st.sidebar:
         options=["gpt-3.5-turbo", "gpt-4o"]
     )
 
-    price_for_1_input_token = prices_per_1M_tokens[selected_model]["input"] / 1e6
-    price_for_1_output_token = prices_per_1M_tokens[selected_model]["output"] / 1e6
 
 
 # Initialize messages and store selected model
@@ -46,6 +44,10 @@ if prompt := st.chat_input():
     st.session_state.messages.append({"role": "user", "content": prompt})
     st.chat_message("user").write(prompt)
 
+    # Update prices based on the selected model before calculating the cost
+    price_for_1_input_token = prices_per_1M_tokens[st.session_state.model]["input"] / 1e6
+    price_for_1_output_token = prices_per_1M_tokens[st.session_state.model]["output"] / 1e6
+
     client = OpenAI(api_key=openai_api_key)
     response = client.chat.completions.create(
         model=st.session_state.model,  # Use the selected model
@@ -61,4 +63,4 @@ if prompt := st.chat_input():
     msg = response.choices[0].message.content
     st.session_state.messages.append({"role": "assistant", "content": msg})
     st.chat_message("assistant").write(msg)
-    st.chat_message("cost").write(f"Cost for this query: ${total_cost:.6f}")
+    st.write(f"Using {st.session_state.model}, cost for this query: ${total_cost:.6f}")
