@@ -7,9 +7,11 @@ import streamlit as st
 
 class ChatbotApp:
     def __init__(self):
-        self.prices_per_1M_tokens = {
-            "gpt-4o":          {"input": 5,   "output": 15},
-            "gpt-3.5-turbo":   {"input": 0.5, "output": 1.5},
+        self.usd_per_token = {
+            "gpt-4o-mini": {"input": 0.00000015, "output": 0.0000006},
+            "gpt-4o": {"input": 0.0000025, "output": 0.00001},
+            "o1-mini": {"input": 0.000003, "output": 0.000012},
+            "o1-preview": {"input": 0.000015, "output": 0.00006},
         }
         self.initialize_session_state()
         self.setup_sidebar()
@@ -19,7 +21,7 @@ class ChatbotApp:
         if "messages" not in st.session_state:
             st.session_state["messages"] = [{"role": "assistant", "content": "How can I help you?"}]
         if "model" not in st.session_state:
-            st.session_state["model"] = "gpt-3.5-turbo"
+            st.session_state["model"] = "gpt-4o-mini"
 
     def setup_sidebar(self):
         with st.sidebar:
@@ -28,8 +30,8 @@ class ChatbotApp:
 
             st.session_state["model"] = st.selectbox(
                 "Select Model",
-                options=["gpt-3.5-turbo", "gpt-4o"],
-                index=0,                
+                options=["gpt-4o-mini", "gpt-4o"],
+                index=0,
             )
 
 
@@ -51,8 +53,8 @@ class ChatbotApp:
         st.session_state.messages.append({"role": "user", "content": prompt})
         st.chat_message("user").write(prompt)
 
-        price_for_1_input_token = self.prices_per_1M_tokens[st.session_state["model"]]["input"] / 1e6
-        price_for_1_output_token = self.prices_per_1M_tokens[st.session_state["model"]]["output"] / 1e6
+        price_for_1_input_token = self.usd_per_token[st.session_state["model"]]["input"]
+        price_for_1_output_token = self.usd_per_token[st.session_state["model"]]["output"]
 
         client = OpenAI(api_key=self.openai_api_key)
         response = client.chat.completions.create(
@@ -73,3 +75,5 @@ class ChatbotApp:
 
 if __name__ == "__main__":
     self = ChatbotApp()
+    
+    
