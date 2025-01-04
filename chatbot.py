@@ -30,7 +30,7 @@ class ChatbotApp:
 
             st.session_state["model"] = st.selectbox(
                 "Select Model",
-                options=["gpt-4o-mini", "gpt-4o"],
+                options=self.usd_per_token.keys(),
                 index=0,
             )
 
